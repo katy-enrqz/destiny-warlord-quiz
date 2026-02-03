@@ -1,0 +1,599 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Which Destiny Warlord Are You?</title>
+    <link rel="icon" type="image/x-icon" href="./images/ghost-nobg.JPG">
+    <style>
+        .hero-gif {
+            height: 180px;
+            margin-top: 14px;
+            border-radius: 18px;
+            background:
+                linear-gradient(to bottom,
+                    rgba(7, 9, 13, .85),
+                    rgba(7, 9, 13, .65),
+                    rgba(7, 9, 13, .95)),
+                url("https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExM2VrczZlbTR2cnBxdHkzNW1haDJzOWR6NTg0dXc0bnJhaDB6a3lzciZlcD12MV9naWZzX3NlYXJjaCZjdD1n/UVESiqjrn4ec4UTu9X/giphy.gif");
+            background-size: cover;
+            background-position: center;
+            border: 1px solid rgba(199, 163, 74, .25);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, .55);
+        }
+
+        :root {
+            --bg: #07090d;
+            --panel: #0d111a;
+            --panel2: #0a0e16;
+            --text: #e8ecf6;
+            --muted: #a7b0c6;
+            --line: #1f2a3a;
+            --gold: #c7a34a;
+            --gold2: #f2d58a;
+            --danger: #ff4d4d;
+            --shadow: 0 18px 50px rgba(0, 0, 0, .45);
+            --radius: 18px;
+            --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+            --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+
+        }
+
+        html,
+        body {
+            height: 100%;
+        }
+
+        body {
+            margin: 0;
+            font-family: var(--sans);
+            color: var(--text);
+            background:
+                radial-gradient(1100px 700px at 20% 10%, rgba(199, 163, 74, .16), transparent 60%),
+                radial-gradient(900px 600px at 80% 40%, rgba(110, 140, 255, .12), transparent 55%),
+                linear-gradient(180deg, #05060a 0%, var(--bg) 55%, #05060a 100%);
+            overflow-x: hidden;
+        }
+
+        /* Destiny-ish geometric glow lines */
+        .bg-lines::before {
+            content: "";
+            position: fixed;
+            inset: -40vh -30vw;
+            pointer-events: none;
+            background:
+                linear-gradient(90deg, transparent 0%, rgba(199, 163, 74, .08) 50%, transparent 100%),
+                repeating-linear-gradient(120deg, rgba(255, 255, 255, .035) 0px, rgba(255, 255, 255, .035) 1px, transparent 1px,
+                    transparent 26px);
+            mix-blend-mode: screen;
+            transform: rotate(-6deg);
+            filter: blur(.2px);
+            opacity: .6;
+        }
+
+        .wrap {
+            max-width: 980px;
+            margin: 0 auto;
+            padding: 46px 18px 90px;
+            position: relative;
+        }
+
+        header {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 22px;
+        }
+
+        .kicker {
+            font-family: var(--mono);
+            color: var(--gold2);
+            letter-spacing: .14em;
+            font-size: 12px;
+            text-transform: uppercase;
+            opacity: .9;
+        }
+
+        h1 {
+            margin: 0;
+            font-weight: 800;
+            letter-spacing: .02em;
+            font-size: clamp(26px, 3.4vw, 44px);
+            line-height: 1.1;
+        }
+
+        .sub {
+            color: var(--muted);
+            max-width: 68ch;
+            font-size: 14.5px;
+            line-height: 1.55;
+        }
+
+        .panel {
+            background: linear-gradient(180deg, rgba(255, 255, 255, .04) 0%, rgba(255, 255, 255, .01) 100%);
+            border: 1px solid rgba(199, 163, 74, .18);
+            box-shadow: var(--shadow);
+            border-radius: var(--radius);
+            overflow: hidden;
+        }
+
+        .panel .topbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            padding: 14px 16px;
+            background: linear-gradient(90deg, rgba(199, 163, 74, .14), transparent 60%);
+            border-bottom: 1px solid rgba(199, 163, 74, .16);
+        }
+
+        .sig {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .glyph {
+            width: 34px;
+            height: 34px;
+            border-radius: 10px;
+            border: 1px solid rgba(199, 163, 74, .35);
+            background:
+                radial-gradient(circle at 30% 20%, rgba(242, 213, 138, .35), transparent 55%),
+                linear-gradient(135deg, rgba(199, 163, 74, .25), rgba(255, 255, 255, .02));
+            position: relative;
+            overflow: hidden;
+        }
+
+        .glyph::after {
+            content: "";
+            position: absolute;
+            inset: 7px;
+            border: 1px solid rgba(242, 213, 138, .25);
+            transform: rotate(45deg);
+        }
+
+        .topbar .meta {
+            font-family: var(--mono);
+            font-size: 12px;
+            color: var(--muted);
+            letter-spacing: .08em;
+            text-transform: uppercase;
+        }
+
+        .content {
+            padding: 18px 16px 10px;
+        }
+
+        .q {
+            padding: 14px 14px;
+            background: rgba(0, 0, 0, .16);
+            border: 1px solid rgba(255, 255, 255, .06);
+            border-radius: 16px;
+            margin-bottom: 12px;
+        }
+
+        .q h3 {
+            margin: 0 0 10px 0;
+            font-size: 16px;
+            letter-spacing: .01em;
+        }
+
+        .opts {
+            display: grid;
+            gap: 8px;
+        }
+
+        label.opt {
+            display: flex;
+            gap: 10px;
+            align-items: flex-start;
+            padding: 10px 10px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, .06);
+            background: rgba(10, 14, 22, .55);
+            cursor: pointer;
+            transition: transform .08s ease, border-color .08s ease, background .08s ease;
+        }
+
+        label.opt:hover {
+            transform: translateY(-1px);
+            border-color: rgba(199, 163, 74, .32);
+            background: rgba(13, 17, 26, .72);
+        }
+
+        input[type="radio"] {
+            margin-top: 2px;
+            accent-color: var(--gold);
+        }
+
+        .opt .txt {
+            color: var(--text);
+            font-size: 14px;
+            line-height: 1.35;
+        }
+
+        .actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            padding: 14px 16px 16px;
+            border-top: 1px solid rgba(255, 255, 255, .06);
+            background: rgba(10, 14, 22, .35);
+        }
+
+        button {
+            appearance: none;
+            border: 1px solid rgba(199, 163, 74, .35);
+            background: linear-gradient(180deg, rgba(199, 163, 74, .22), rgba(199, 163, 74, .10));
+            color: var(--text);
+            border-radius: 14px;
+            padding: 10px 14px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: transform .08s ease, filter .08s ease;
+        }
+
+        button:hover {
+            transform: translateY(-1px);
+            filter: brightness(1.06);
+        }
+
+        button.secondary {
+            border: 1px solid rgba(255, 255, 255, .14);
+            background: rgba(255, 255, 255, .05);
+            color: var(--muted);
+            font-weight: 600;
+        }
+
+        .warn {
+            color: #ffd1d1;
+            background: rgba(255, 77, 77, .10);
+            border: 1px solid rgba(255, 77, 77, .25);
+            padding: 10px 12px;
+            border-radius: 14px;
+            margin: 12px 0 0;
+            display: none;
+            font-size: 13.5px;
+        }
+
+        .result {
+            margin-top: 14px;
+            padding: 14px 14px;
+            border-radius: 16px;
+            border: 1px solid rgba(199, 163, 74, .28);
+            background: linear-gradient(180deg, rgba(199, 163, 74, .16), rgba(0, 0, 0, .18));
+            display: none;
+        }
+
+        .result h2 {
+            margin: 0 0 6px 0;
+            font-size: 22px;
+            letter-spacing: .01em;
+        }
+
+        .result p {
+            margin: 6px 0 0;
+            color: var(--muted);
+            line-height: 1.5;
+        }
+
+        .pillrow {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: 10px;
+        }
+
+        .pill {
+            font-family: var(--mono);
+            font-size: 12px;
+            letter-spacing: .06em;
+            text-transform: uppercase;
+            padding: 6px 10px;
+            border-radius: 999px;
+            border: 1px solid rgba(255, 255, 255, .12);
+            background: rgba(0, 0, 0, .22);
+            color: var(--text);
+        }
+
+        .small {
+            font-family: var(--mono);
+            font-size: 12px;
+            color: var(--muted);
+            letter-spacing: .02em;
+            margin-top: 8px;
+        }
+
+        footer {
+            margin-top: 16px;
+            color: var(--muted);
+            font-size: 12.5px;
+            text-align: center;
+            opacity: .85;
+        }
+    </style>
+</head>
+
+<body class="bg-lines">
+    <div class="wrap">
+        <header>
+            <div class="hero-gif">
+
+                <div class="kicker">DESTINY — DARK AGE PERSONALITY TEST</div>
+                <h1>Which Warlord Are You?</h1>
+                <div class="sub">
+                    Answer every question, then submit to reveal your result.
+                    This is fan-made and lore-flavored — made for sharing with friends.
+                </div>
+            </div>
+        </header>
+
+        <div class="panel">
+            <div class="topbar">
+                <div class="sig">
+                    <div class="glyph" aria-hidden="true"></div>
+                    <div>
+                        <div style="font-weight:800; letter-spacing:.02em;">Warlord Alignment Scan</div>
+                        <div class="meta">Choose one answer per question</div>
+                    </div>
+                </div>
+                <div class="meta" id="progress">0 / 7 answered</div>
+            </div>
+
+            <form id="quiz" class="content">
+                <!-- Questions are injected by JS -->
+                <div class="warn" id="warn">Finish all questions to reveal your result.</div>
+
+                <div class="result" id="result">
+                    <h2 id="resultTitle">Result</h2>
+                    <p id="resultBody"></p>
+                    <div class="pillrow" id="resultPills"></div>
+                    <div class="small" id="shareText"></div>
+                </div>
+            </form>
+
+            <div class="actions">
+                <button type="button" id="submitBtn">Reveal Result</button>
+                <button type="button" class="secondary" id="resetBtn">Reset</button>
+                <button type="button" class="secondary" id="copyBtn">Copy Share Text</button>
+            </div>
+        </div>
+
+        <footer>
+            Made with 🤍 - katy-enrqz
+        </footer>
+    </div>
+
+    <script>
+        // --- Quiz content ---
+        const QUESTIONS = [
+            {
+                prompt: "When you gain power, what’s your first instinct?",
+                options: {
+                    A: "Secure territory and defend it ruthlessly",
+                    B: "Protect people—even if they don’t trust you yet",
+                    C: "Prove you’re the strongest, no matter the cost",
+                    D: "Manipulate events from the shadows"
+                }
+            },
+            {
+                prompt: "Your leadership style is best described as:",
+                options: {
+                    A: "Strategic and calculated",
+                    B: "Honorable and disciplined",
+                    C: "Explosive and intimidating",
+                    D: "Quiet, feared, and unpredictable"
+                }
+            },
+            {
+                prompt: "How do you deal with rivals?",
+                options: {
+                    A: "Eliminate them efficiently",
+                    B: "Offer a chance to stand down",
+                    C: "Crush them publicly",
+                    D: "Let them destroy themselves"
+                }
+            },
+            {
+                prompt: "Your base of operations would be:",
+                options: {
+                    A: "A fortified ruin in hostile territory",
+                    B: "A stronghold people rally around",
+                    C: "A mountain peak or arena",
+                    D: "Somewhere no one can track"
+                }
+            },
+            {
+                prompt: "Your greatest strength?",
+                options: {
+                    A: "Control",
+                    B: "Loyalty",
+                    C: "Raw power",
+                    D: "Fear"
+                }
+            },
+            {
+                prompt: "Your greatest flaw?",
+                options: {
+                    A: "Ruthlessness",
+                    B: "Stubborn honor",
+                    C: "Recklessness",
+                    D: "Isolation"
+                }
+            },
+            {
+                prompt: "How do others describe you?",
+                options: {
+                    A: "Dangerous",
+                    B: "Reliable",
+                    C: "Terrifying",
+                    D: "Ominous"
+                }
+            }
+        ];
+
+        // Result buckets (you can tweak these blurbs anytime)
+        const RESULTS = {
+            A: {
+                title: "The Calculators (Territory & Control)",
+                body:
+                    "You lead through structure, planning, and dominance. You don’t just survive the Dark Age—you organize it.",
+                matches: ["Benyo Lukacs", "Carnunta", "Kandak", "Naeem"]
+            },
+            B: {
+                title: "Felwinter (Purpose over Power)",
+                body:
+                    "You’re the rare Warlord who questions the role itself. You protect people and you outgrow ego-driven rule.",
+                matches: ["Felwinter", "Castor"]
+            },
+            C: {
+                title: "Shaxx (The Battlefield Made Flesh)",
+                body:
+                    "Bold, loud, fearless. You make victories unforgettable—and you don’t back down when the stakes rise.",
+                matches: ["Shaxx (formerly)", "Citan", "Cathal"]
+            },
+            D: {
+                title: "The Shadows (Myth & Fear)",
+                body:
+                    "You rule through reputation, mystery, and inevitability. People aren’t sure what you are—and that’s the point.",
+                matches: ["Red Man", "The Wake", "Reich", "Segoth", "Rience", "Heyka-4"]
+            }
+        };
+
+        // --- Render ---
+        const form = document.getElementById("quiz");
+        const progress = document.getElementById("progress");
+        const warn = document.getElementById("warn");
+        const resultBox = document.getElementById("result");
+        const resultTitle = document.getElementById("resultTitle");
+        const resultBody = document.getElementById("resultBody");
+        const resultPills = document.getElementById("resultPills");
+        const shareText = document.getElementById("shareText");
+
+        function render() {
+            // inject questions before warn/result blocks
+            const existingQs = form.querySelectorAll(".q");
+            existingQs.forEach(el => el.remove());
+
+            QUESTIONS.forEach((q, idx) => {
+                const wrap = document.createElement("div");
+                wrap.className = "q";
+                wrap.innerHTML = `
+          <h3>${idx + 1}️⃣ ${q.prompt}</h3>
+          <div class="opts">
+            ${Object.entries(q.options).map(([key, text]) => `
+              <label class="opt">
+                <input type="radio" name="q${idx}" value="${key}" />
+                <div class="txt"><b>${key}.</b> ${text}</div>
+              </label>
+            `).join("")}
+          </div>
+        `;
+                form.insertBefore(wrap, warn);
+            });
+
+            form.addEventListener("change", updateProgress);
+            updateProgress();
+        }
+
+        function updateProgress() {
+            const answered = QUESTIONS.reduce((acc, _, idx) => {
+                return acc + (form.querySelector(`input[name="q${idx}"]:checked`) ? 1 : 0);
+            }, 0);
+            progress.textContent = `${answered} / ${QUESTIONS.length} answered`;
+        }
+
+        function computeResult() {
+            const counts = { A: 0, B: 0, C: 0, D: 0 };
+            for (let i = 0; i < QUESTIONS.length; i++) {
+                const picked = form.querySelector(`input[name="q${i}"]:checked`);
+                if (!picked) return null;
+                counts[picked.value]++;
+            }
+
+            // Find max; break ties with a deterministic priority order, then random fallback if desired
+            const max = Math.max(counts.A, counts.B, counts.C, counts.D);
+            const top = Object.keys(counts).filter(k => counts[k] === max);
+
+            // Tie-break: favor the letter picked most in the LAST answered question sequence isn't tracked,
+            // so use a stable priority that feels reasonable.
+            const priority = ["B", "A", "C", "D"];
+            const winner = top.sort((x, y) => priority.indexOf(x) - priority.indexOf(y))[0];
+
+            return { winner, counts };
+        }
+
+        function showResult() {
+            warn.style.display = "none";
+
+            const data = computeResult();
+            if (!data) {
+                resultBox.style.display = "none";
+                warn.style.display = "block";
+                warn.scrollIntoView({ behavior: "smooth", block: "center" });
+                return;
+            }
+
+            const res = RESULTS[data.winner];
+
+            resultTitle.textContent = res.title;
+            resultBody.textContent = res.body;
+
+            resultPills.innerHTML = "";
+            res.matches.forEach(name => {
+                const pill = document.createElement("div");
+                pill.className = "pill";
+                pill.textContent = name;
+                resultPills.appendChild(pill);
+            });
+
+            const share = `I got: ${res.title} — matches: ${res.matches.join(", ")}.`;
+            shareText.textContent = share;
+
+            resultBox.style.display = "block";
+            resultBox.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+
+        function resetQuiz() {
+            form.reset();
+            warn.style.display = "none";
+            resultBox.style.display = "none";
+            updateProgress();
+            window.scrollTo({ top: 0, behavior: "smooth" });
+        }
+
+        async function copyShare() {
+            const txt = shareText.textContent.trim();
+            if (!txt) {
+                // If result isn't generated yet, try compute — else gentle nudge
+                const data = computeResult();
+                if (!data) {
+                    warn.style.display = "block";
+                    warn.textContent = "Reveal your result first, then copy the share text.";
+                    return;
+                }
+            }
+            try {
+                await navigator.clipboard.writeText(shareText.textContent.trim());
+                warn.style.display = "block";
+                warn.style.background = "rgba(199,163,74,.10)";
+                warn.style.borderColor = "rgba(199,163,74,.28)";
+                warn.style.color = "#f3e8c1";
+                warn.textContent = "Copied share text to clipboard.";
+            } catch (e) {
+                warn.style.display = "block";
+                warn.textContent = "Couldn’t copy automatically — select the share text and copy it manually.";
+            }
+        }
+
+        document.getElementById("submitBtn").addEventListener("click", showResult);
+        document.getElementById("resetBtn").addEventListener("click", resetQuiz);
+        document.getElementById("copyBtn").addEventListener("click", copyShare);
+
+        render();
+    </script>
+</body>
+
+</html>
