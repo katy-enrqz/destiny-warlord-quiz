@@ -5,4 +5,4 @@ I love the world of Destiny. Being a fan since Destiny's conception, I have alwa
 
 Here's to all the D1 vets who love the game and this universe.
 
-- Katy
+🤍 Katy
