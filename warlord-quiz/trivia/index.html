@@ -1,0 +1,273 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Destiny Warlord Trivia</title>
+
+  <link rel="icon" type="image/x-icon" href="../images/ghost-nobg.JPG">
+  <link rel="stylesheet" href="../css/styles.css">
+
+  <style>
+    /* page-specific additions while keeping shared Destiny styling */
+    .navrow{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-top: 10px;
+      align-items: center;
+    }
+    .hud{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      justify-content:flex-end;
+      align-items:center;
+    }
+    .hud .badge{
+      border-color: rgba(255,255,255,.14);
+      background: rgba(0,0,0,.18);
+    }
+    .prompt{
+      font-size: 18px;
+      line-height: 1.35;
+      margin: 0 0 10px 0;
+      letter-spacing:.01em;
+    }
+    .hint{
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.45;
+    }
+    .feedback{
+      margin-top: 12px;
+      padding: 10px 12px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(0,0,0,.18);
+      display:none;
+      line-height: 1.5;
+    }
+    .feedback.good{
+      border-color: rgba(199,163,74,.30);
+      background: rgba(199,163,74,.10);
+      color: #f3e8c1;
+    }
+    .feedback.bad{
+      border-color: rgba(255,77,77,.25);
+      background: rgba(255,77,77,.10);
+      color: #ffd1d1;
+    }
+    .choiceBtn{
+      width:100%;
+      text-align:left;
+      padding: 12px 12px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(10,14,22,.55);
+      color: var(--text);
+      cursor:pointer;
+      transition: transform .08s ease, border-color .08s ease, background .08s ease;
+      font-weight:650;
+    }
+    .choiceBtn:hover{
+      transform: translateY(-1px);
+      border-color: rgba(199,163,74,.32);
+      background: rgba(13,17,26,.72);
+    }
+    .choiceBtn[disabled]{
+      opacity:.7;
+      cursor:not-allowed;
+      transform:none;
+    }
+
+    .grid2{
+      display:grid;
+      grid-template-columns: 1.2fr .8fr;
+      gap:12px;
+      margin-top: 12px;
+    }
+    @media (max-width: 860px){
+      .grid2{ grid-template-columns: 1fr; }
+      .hud{ justify-content:flex-start; }
+    }
+
+    .barSlim{
+      height:10px;
+      border-radius:999px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(0,0,0,.22);
+      overflow:hidden;
+      position:relative;
+      margin-top: 6px;
+    }
+    .barSlimFill{
+      height:100%;
+      width:0%;
+      background: linear-gradient(90deg, rgba(199,163,74,.55), rgba(242,213,138,.20));
+      transition: width 450ms cubic-bezier(.2,.8,.2,1);
+    }
+
+    /* selector styling that matches your theme */
+    .selectWrap{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+    select{
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+
+  border: 1px solid rgba(199,163,74,.45);
+  background:
+    linear-gradient(180deg,
+      rgba(10,14,22,.95),
+      rgba(7,9,13,.95)
+    );
+  color: var(--text);
+
+  border-radius: 14px;
+  padding: 10px 14px;
+  font-weight: 700;
+
+  cursor: pointer;
+  font-family: var(--mono);
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  font-size: 12px;
+
+  box-shadow: 0 10px 25px rgba(0,0,0,.45);
+}
+
+select:hover{
+  border-color: rgba(242,213,138,.55);
+}
+
+select:focus{
+  outline: none;
+  border-color: rgba(242,213,138,.65);
+  box-shadow:
+    0 0 0 2px rgba(199,163,74,.18),
+    0 14px 30px rgba(0,0,0,.55);
+}
+select option{
+  background-color: #0d111a;
+  color: #e8ecf6;
+}
+  </style>
+</head>
+
+<body class="bg-lines">
+  <div class="wrap">
+    <header>
+      <div class="hero-gif">
+        <div class="kicker">DESTINY — INTERACTIVE TRIVIA</div>
+        <h1>Warlord Trivia Gauntlet</h1>
+        <div class="sub">
+          Pick a category, build a streak, and watch the difficulty ramp as you heat up.
+        </div>
+
+        <div class="navrow">
+          <a href="../index.html"><button type="button" class="secondary">← Back to Quiz</button></a>
+
+          <div class="selectWrap">
+            <select id="categorySelect" aria-label="Select category">
+              <option value="All">All</option>
+              <option value="Light">Light</option>
+              <option value="Vex">Vex</option>
+              <option value="Hive/Taken">Hive</option>
+              <option value="Cabal">Cabal</option>
+              <option value="Eliksni">Eliksni</option>
+              <option value="Destinations">Destinations</option>
+              <option value="Gameplay">Gameplay</option>
+            </select>
+          </div>
+
+          <button type="button" id="startBtn">Start Game</button>
+          <button type="button" class="secondary" id="hintBtn">Hint (-points)</button>
+          <button type="button" class="secondary" id="howBtn">How it works</button>
+        </div>
+      </div>
+    </header>
+
+    <div class="panel">
+      <div class="topbar">
+        <div class="sig">
+          <div class="glyph" aria-hidden="true"></div>
+          <div>
+            <div style="font-weight:800; letter-spacing:.02em;">Trivia Run</div>
+            <div class="meta" id="modeText">Mode: 10 questions • 20s each</div>
+          </div>
+        </div>
+
+        <div class="hud">
+          <div class="badge" id="qCounter">Q: 0 / 10</div>
+          <div class="badge" id="scoreBadge">Score: 0</div>
+          <div class="badge" id="streakBadge">Streak: 0</div>
+          <div class="badge" id="rampBadge">Ramp: EASY</div>
+          <div class="badge" id="timeBadge">Time: 20</div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="card">
+          <div class="cardTitle">
+            <div class="label" id="questionMeta">Current question</div>
+            <div class="badge" id="difficultyBadge">difficulty: —</div>
+          </div>
+
+          <div class="barSlim" aria-hidden="true">
+            <div class="barSlimFill" id="timeBar"></div>
+          </div>
+
+          <p class="prompt" id="prompt">Choose a category, then press “Start Game”.</p>
+
+          <div class="opts" id="choices"></div>
+
+          <div class="feedback" id="feedback"></div>
+          <div class="hint" id="hint"></div>
+        </div>
+
+        <div class="grid2">
+          <div class="card">
+            <div class="cardTitle">
+              <div class="label">Run summary</div>
+              <div class="badge" id="statusBadge">status: idle</div>
+            </div>
+            <div class="small" id="summaryText">
+              Correct answers score higher when you answer fast — and streaks push you into harder questions.
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="cardTitle">
+              <div class="label">Controls</div>
+              <div class="badge">tips</div>
+            </div>
+            <div class="small" id="tipsText">
+              • Hint reveals the explanation early (costs points).<br/>
+              • Streak ramps difficulty: 0–2 Easy, 3–5 Medium, 6+ Hard.<br/>
+              • Skip breaks streak.
+            </div>
+            <div class="divider"></div>
+            <button type="button" class="secondary" id="restartBtn">Restart</button>
+            <button type="button" class="secondary" id="copyShareBtn">Copy Results</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="actions">
+        <button type="button" id="nextBtn">Next</button>
+        <button type="button" class="secondary" id="skipBtn">Skip</button>
+      </div>
+    </div>
+
+    <footer>Made with 🤍 - katy-enrqz</footer>
+  </div>
+
+  <script src="../js/trivia.js"></script>
+</body>
+</html>
