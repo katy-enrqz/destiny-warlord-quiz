@@ -470,3 +470,146 @@ footer {
   text-align: center;
   opacity: .85;
 }
+
+/* ---------------------------
+   Responsive / Mobile polish
+---------------------------- */
+
+/* Prevent weird iOS zoom on form controls */
+input, select, textarea, button {
+  font-size: 16px;
+}
+
+/* Ensure long words/URLs don't overflow */
+* {
+  word-break: break-word;
+}
+
+/* Make hero backgrounds scale nicely */
+.hero-gif {
+  height: auto;                 /* was fixed height */
+  min-height: 220px;            /* keeps the look */
+  padding: 18px 16px;           /* gives content breathing room */
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 10px;
+}
+.hero-inner { padding: 18px 16px; }
+
+
+/* Default wrap spacing tuned a bit */
+.wrap {
+  padding: 32px 14px 70px;
+}
+
+/* Buttons: more tappable */
+button {
+  min-height: 44px;             /* thumb-friendly */
+}
+
+/* Option cards: bigger hit area */
+label.opt {
+  padding: 12px 12px;
+}
+
+/* Result pill row spacing */
+.pillrow {
+  gap: 8px;
+}
+
+/* ---------------------------
+   Breakpoints
+---------------------------- */
+
+/* Tablets and down */
+@media (max-width: 860px) {
+  .panel .topbar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .panel .topbar .meta {
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+  }
+
+  /* Make action buttons wrap nicely */
+  .actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .actions button,
+  .actions a button {
+    width: 100%;
+  }
+
+  /* Quiz question text slightly smaller */
+  .q h3 {
+    font-size: 15.5px;
+  }
+}
+
+/* Phones */
+@media (max-width: 520px) {
+  .wrap {
+    padding: 26px 12px 60px;
+  }
+
+  h1 {
+    font-size: 28px; /* clamp will still apply, this keeps it readable */
+  }
+
+  .sub {
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  .content {
+    padding: 14px 12px 8px;
+  }
+
+  .q {
+    padding: 12px 12px;
+    border-radius: 14px;
+  }
+
+  label.opt {
+    gap: 10px;
+    border-radius: 14px;
+  }
+
+  input[type="radio"] {
+    transform: scale(1.05);
+    margin-top: 3px;
+  }
+
+  .opt .txt {
+    font-size: 14px;
+  }
+
+  .result h2 {
+    font-size: 20px;
+  }
+
+  .pill {
+    font-size: 11px;
+    padding: 6px 9px;
+  }
+
+  footer {
+    font-size: 12px;
+    padding: 0 8px;
+  }
+}
+
+/* Small phones */
+@media (max-width: 360px) {
+  h1 { font-size: 24px; }
+  .glyph { width: 30px; height: 30px; }
+  .panel .topbar { padding: 12px 12px; }
+  .actions { padding: 12px 12px 14px; }
+}
