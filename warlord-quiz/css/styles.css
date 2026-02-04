@@ -38,14 +38,33 @@
 html, body { height: 100%; }
 
 body {
-  margin: 0;
+   margin: 0;
   font-family: var(--sans);
   color: var(--text);
-  background:
-    radial-gradient(1100px 700px at 20% 10%, rgba(199, 163, 74, .16), transparent 60%),
-    radial-gradient(900px 600px at 80% 40%, rgba(110, 140, 255, .12), transparent 55%),
-    linear-gradient(180deg, #05060a 0%, var(--bg) 55%, #05060a 100%);
+  background: var(--bg);
   overflow-x: hidden;
+  position: relative;
+}
+body::before {
+  content: "";
+  position: fixed;
+  inset: -20vh -20vw;
+  z-index: -1;
+  pointer-events: none;
+
+  background:
+    radial-gradient(1200px 800px at 15% 10%, rgba(199,163,74,.18), transparent 65%),
+    radial-gradient(1000px 700px at 85% 40%, rgba(110,140,255,.14), transparent 60%),
+    linear-gradient(
+      180deg,
+      #05060a 0%,
+      #07090d 40%,
+      #07090d 60%,
+      #05060a 100%
+    );
+
+  background-repeat: no-repeat;
+  background-attachment: fixed;
 }
 
 /* Destiny-ish geometric glow lines */
